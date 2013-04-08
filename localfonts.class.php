@@ -1,9 +1,35 @@
 <?php
 
+/*
+ *
+ */
+
+/*
+ INTERACTION FUNCTIONS
+ Interaction Functions are the public functions that users of the class are
+ allowed to interact with. If it isn't a public function meant for the user
+ to call directly then it shouldn't be in this section.
+ 
+ COMPILATION FUNCTIONS
+ Compilation Functions are the functions that perform pre-defined collections
+ of tasks. These functions shouldn't do anything beyond simple logic by
+ themselves but instead call upon Worker Functions in a certain order to
+ accomplish the desired outcome. These functions should not be callable by
+ the user.
+ 
+ WORKER FUNCTIONS
+ Worker Functions are where you should put complex logic, interactions with
+ other classes, calls to external resources and filesystem modification. These
+ functions should not be callable by the user.
+*/
+
 class LocalFonts{
 	private $tempPath = "./temp/"		// set the temporary download path
 	private $localPath = false;			// local path for saving downloaded fonts
 	private $requestedURLs = false;		// the GWF URLs to the fonts the user wants to download
+
+
+	/* INTERACTION FUNCTIONS */
 
 	public function __construct($_path = false){
 		if($_path){
@@ -25,27 +51,51 @@ class LocalFonts{
 				array_push($_temp, $value);
 			}
 		}
-		$this->requestedURLs = array_unique($_temp);
+		$_temp = array_unique($_temp);
+		foreach ($_temp as $key => $value) {
+			array_push($this->requestedURLs, $value);
+		}
 	}
 
 	// control which download method to use
 	public function download($_output = 'zip'){
 		switch ($_output) {
 			case 'url':
-				
+				$this->downloadURL();
 				break;
 			case 'local':
-				
+				$this->downloadLocal();
 				break;
 			case 'zip':
 			default:
-				
+				$this->downloadZIP();
 				break;
 		}
 	}
 
+
+	/* COMPILATION FUNCTIONS */
+
+	// make and store the ZIP, return the URL
+	private function downloadURL(){
+		
+	}
+
+	// don't make a ZIP, move files straight to usable location
+	private function downloadLocal(){
+		
+	}
+
+	// make ZIP, read the file to the client, delete the ZIP
+	private function downloadZIP(){
+		
+	}
+
+
+	/* WORKER FUNCTIONS */
+
 	// follows the URLs in $this->requestedURLs, makes temp folders, downloads the CSS files
-	private function downloadCSS(){
+	private function getCSS(){
 		
 	}
 
@@ -55,7 +105,7 @@ class LocalFonts{
 	}
 
 	// downloads individual font files from the Web Fonts server
-	private function downloadFonts(){
+	private function getFonts(){
 		
 	}
 
