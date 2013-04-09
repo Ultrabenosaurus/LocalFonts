@@ -33,15 +33,10 @@
  These functions should not be callable by the user.
 */
 
-abstract class LocalFonts_Base{
-	protected $tempPath = "./temp/"			// set the temporary download path
-	protected $localPath = false;			// local path for saving downloaded fonts
-	protected $requestedURLs = false;		// the URLs to the fonts the user wants to download
-	protected $downloadFunctions = array(	// the names of the various download functions
-		"zip",
-		"local",
-		"url"
-	);
+class LocalFonts{
+	private $tempPath = "./temp/"		// set the temporary download path
+	private $localPath = false;			// local path for saving downloaded fonts
+	private $requestedURLs = false;		// the GWF URLs to the fonts the user wants to download
 
 
 	/* INTERACTION FUNCTIONS */
@@ -73,26 +68,36 @@ abstract class LocalFonts_Base{
 	}
 
 	// control which download method to use
-	final public function download($_output = 'zip'){
-		if(in_array($_output, $this->downloadFunctions)){
-			return $this->{"download_".$_output}();
+	public function download($_output = 'zip'){
+		switch ($_output) {
+			case 'url':
+				$this->downloadURL();
+				break;
+			case 'local':
+				$this->downloadLocal();
+				break;
+			case 'zip':
+			default:
+				$this->downloadZIP();
+				break;
 		}
-		return false;
-	}
-
-	// add new download options
-	final public function addDownloadOption($_functions = false){
-		$_functions = (is_array($_functions) ? $_functions : (is_string($_functions) ? array($_functions) : false));
-		if(!$_functions){ throw new InvalidArgumentException("Please provide a string or an array of strings"); }
-		$this->downloadFunctions = array_merge($this->downloadFunctions, $_functions);
-		$this->downloadFunctions = array_unique($this->downloadFunctions);
 	}
 
 
 	/* COMPILATION FUNCTIONS */
 
+	// make and store the ZIP, return the URL
+	private function downloadURL(){
+		
+	}
+
+	// don't make a ZIP, move files straight to usable location
+	private function downloadLocal(){
+		
+	}
+
 	// make ZIP, read the file to the client, delete the ZIP
-	private function download_zip(){
+	private function downloadZIP(){
 		
 	}
 
