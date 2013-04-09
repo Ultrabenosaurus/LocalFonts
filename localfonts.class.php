@@ -14,13 +14,23 @@
  Compilation Functions are the functions that perform pre-defined collections
  of tasks. These functions shouldn't do anything beyond simple logic by
  themselves but instead call upon Worker Functions in a certain order to
- accomplish the desired outcome. These functions should not be callable by
- the user.
+ accomplish the desired outcome.
+ These functions should not be callable by the user.
  
  WORKER FUNCTIONS
  Worker Functions are where you should put complex logic, interactions with
- other classes, calls to external resources and filesystem modification. These
- functions should not be callable by the user.
+ other classes, calls to external resources and filesystem modification. Worker
+ Functions should contain re-usable but task-specific code such as defining
+ how to download from a given service.
+ These functions should not be callable by the user.
+ 
+ SUPPORT FUNCTIONS
+ Support Functions are similar to Worker Functions, but less specific such as
+ defining how to process the arrays you make regardless of what is in the array
+ or what purpose it serves. Also, where Worker Functions should only be called
+ by Compilation Functions - including not calling other Worker Functions - a
+ Support Function can be called from anywhere in the class.
+ These functions should not be callable by the user.
 */
 
 class LocalFonts{
