@@ -37,11 +37,7 @@ abstract class LocalFonts_Base{
 	protected $tempPath = "./temp/"			// set the temporary download path
 	protected $localPath = false;			// local path for saving downloaded fonts
 	protected $requestedURLs = false;		// the URLs to the fonts the user wants to download
-	protected $downloadFunctions = array(	// the names of the various download functions
-		"zip",
-		"local",
-		"url"
-	);
+	protected $downloadFunctions = array();	// the names of the various download functions
 
 
 	/* INTERACTION FUNCTIONS */
@@ -54,6 +50,7 @@ abstract class LocalFonts_Base{
 				throw new InvalidArgumentException("'".$_path."' is not a string or is not a valid folder path.");
 			}
 		}
+		$this->addDownloadOption(array("zip", "local", "url"));
 	}
 
 	// add a URL or a group of URLs to $this->requestedURLs ready for processing
@@ -62,14 +59,11 @@ abstract class LocalFonts_Base{
 		if(!$_url){ throw new InvalidArgumentException("Please provide a string or an array of strings"); }
 		$_temp = array();
 		foreach ($_url as $key => $value) {
-			if(is_string($value) && strpos($value, "fonts.googleapis.com") !== false){
-				array_push($_temp, $value);
+			if(is_string($value)){
+				array_push($this->requestedURLs, $value);
 			}
 		}
 		$_temp = array_unique($_temp);
-		foreach ($_temp as $key => $value) {
-			array_push($this->requestedURLs, $value);
-		}
 	}
 
 	// control which download method to use
@@ -84,7 +78,12 @@ abstract class LocalFonts_Base{
 	final public function addDownloadOption($_functions = false){
 		$_functions = (is_array($_functions) ? $_functions : (is_string($_functions) ? array($_functions) : false));
 		if(!$_functions){ throw new InvalidArgumentException("Please provide a string or an array of strings"); }
-		$this->downloadFunctions = array_merge($this->downloadFunctions, $_functions);
+		foreach ($_functions as $key => $value) {
+			if(function_exists($this->{$value})){
+				array_push($this->downloadFunctions, $value);
+			}
+		}
+		// $this->downloadFunctions = array_merge($this->downloadFunctions, $_functions);
 		$this->downloadFunctions = array_unique($this->downloadFunctions);
 	}
 
@@ -110,7 +109,7 @@ abstract class LocalFonts_Base{
 	}
 
 	// downloads individual font files from the Web Fonts server
-	private function getFonts(){
+	private function getFont(){
 		
 	}
 
